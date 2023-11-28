@@ -1,0 +1,4 @@
+.canvasContainer {
+    @apply min-w-full;
+     background-color: theme('colors.background1');
+}
