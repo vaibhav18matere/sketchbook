@@ -1,10 +1,11 @@
 import { useRef, useEffect, useLayoutEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
+import { MENU_ITEMS } from "@/utility/constants";
 
 const Board = () => {
      const canvasRef = useRef(null);
      const shouldDraw = useRef(false);
-     const activeMenuItem = useSelector((state) => state.menu.activeMenuItem);
+     const { activeMenuItem, actionMenuItem } = useSelector((state) => state.menu);
      const { color, size } = useSelector((state) => state.toolbox[activeMenuItem]);
      // console.log(color, size);
      // before browser mounting on page
@@ -66,6 +67,22 @@ const Board = () => {
           changeConfig();
 
      }, [color, size])
+
+     // to download image
+     useEffect(() => {
+          if (!canvasRef.current) return
+          const canvas = canvasRef.current;
+          const context = canvas.getContext('2d');
+
+          if (actionMenuItem === MENU_ITEMS.DOWNLOAD) {
+               const urlGenerated = canvas.toDataURL();
+               const anchorTag = document.createElement('a');
+               anchorTag.href = urlGenerated;
+               anchorTag.download = 'paint.jpg';
+               anchorTag.click();
+               // console.log(urlGenerated);
+          }
+     }, [actionMenuItem])
 
      return (
           <>
