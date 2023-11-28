@@ -1,8 +1,11 @@
+import styles from './index.module.css';
 import { useRef, useEffect, useLayoutEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { MENU_ITEMS } from "@/utility/constants";
+import { actionItemClick } from '@/slice/menuSlice';
 
 const Board = () => {
+     const dispatch = useDispatch();
      const canvasRef = useRef(null);
      const shouldDraw = useRef(false);
      const { activeMenuItem, actionMenuItem } = useSelector((state) => state.menu);
@@ -80,13 +83,15 @@ const Board = () => {
                anchorTag.href = urlGenerated;
                anchorTag.download = 'paint.jpg';
                anchorTag.click();
-               // console.log(urlGenerated);
           }
-     }, [actionMenuItem])
+          dispatch(actionItemClick(null))
+     }, [actionMenuItem, dispatch])
 
      return (
           <>
-               <canvas ref={canvasRef}></canvas>
+               <div className={styles.canvasContainer}>
+                    <canvas ref={canvasRef}></canvas>
+               </div>
           </>
      )
 }
